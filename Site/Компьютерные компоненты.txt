@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Компьютерные компоненты - Энциклопедия железа ПК</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* УБИРАЕМ background: linear-gradient отсюда */
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; /* МЕНЯЕМ с fixed на fixed (оно уже было fixed) */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* ДОБАВЛЯЕМ градиент сюда и делаем его фиксированным */
+            background: 
+                linear-gradient(135deg, 
+                    #0f172a 0%, 
+                    #1e293b 25%, 
+                    #2d3446 50%, 
+                    #3d4a61 75%, 
+                    #4e5f7a 100%),
+                radial-gradient(circle at 20% 50%, rgba(74, 144, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(155, 81, 224, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(66, 245, 147, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #60a5fa;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+
+        main {
+            padding: 2rem 0;
+            position: relative; /* Добавляем для контекста наложения */
+            z-index: 1; /* Чтобы контент был поверх фона */
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(96, 165, 250, 0.05), 
+                rgba(168, 85, 247, 0.05));
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 3rem;
+        }
+
+        .component-card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(96, 165, 250, 0.05), 
+                rgba(168, 85, 247, 0.05));
+            z-index: -1;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            border-color: #60a5fa;
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .component-card h3 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Стили для иконок в карточках */
+        .component-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(96, 165, 250, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .component-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .component-page {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(96, 165, 250, 0.03), 
+                rgba(168, 85, 247, 0.03));
+            z-index: -1;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, 
+                rgba(96, 165, 250, 0.1), 
+                rgba(168, 85, 247, 0.1));
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .component-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        /* Стили для изображений компонентов */
+        .component-image {
+            width: 300px;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+
+        .component-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .component-image img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Стили для карусели */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 400px;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Убраны стили для подписей карусели */
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(96, 165, 250, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(96, 165, 250, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #60a5fa;
+            transform: scale(1.2);
+        }
+
+        .carousel-dot:hover {
+            background: #60a5fa;
+        }
+
+        /* Стили для галереи изображений */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 150px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .spec-item {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.05), 
+                rgba(255, 255, 255, 0.02));
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #60a5fa;
+            transition: all 0.3s ease;
+        }
+
+        .spec-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .comparison-table::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(96, 165, 250, 0.03), 
+                rgba(168, 85, 247, 0.03));
+            z-index: -1;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            color: white;
+        }
+
+        footer {
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95), 
+                rgba(30, 41, 59, 0.95));
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1; /* Добавляем чтобы footer был поверх фона */
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(96, 165, 250, 0.02), 
+                rgba(168, 85, 247, 0.02));
+            z-index: -1;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: #60a5fa;
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+        }
+
+        /* Стили для заглушек при отсутствии изображений */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            font-size: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .component-header {
+                flex-direction: column;
+            }
+            
+            .component-image {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .carousel-container {
+                height: 300px;
+            }
+            
+            .carousel {
+                height: 300px;
+            }
+            
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo" onclick="showPage('home')">
+                <span>💻 PC Components</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">Главная</a></li>
+                    <li><a href="#" onclick="showPage('comparison')">Сравнение</a></li>
+                    <li><a href="#" onclick="showPage('about')">О сайте</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Главная страница -->
+        <div id="home-page" class="page active">
+            <section class="hero">
+                <h1>Энциклопедия компьютерных компонентов</h1>
+                <p>Все, что нужно знать о железе ПК в одном месте</p>
+                <a href="#components" class="btn" onclick="scrollToComponents()">Изучить компоненты</a>
+            </section>
+
+            <section id="components">
+                <h2 style="text-align: center; margin: 3rem 0 1.5rem; color: #60a5fa;">Основные компоненты ПК</h2>
+                
+                <div class="components-grid">
+                    <!-- Процессор -->
+                    <div class="component-card" onclick="showComponent('cpu')">
+                        <div class="component-icon">
+                            <img src="images/cpu-icon.png" alt="Иконка процессора" onerror="this.style.display='none'; this.parentElement.innerHTML='⚙️';">
+                        </div>
+                        <h3>Процессор (CPU)</h3>
+                        <p>Мозг компьютера, выполняет все вычисления и обрабатывает данные.</p>
+                        <div class="specs">
+                            <span style="display: block; margin-top: 10px; color: #94a3b8;">Нажмите для подробностей</span>
+                        </div>
+                    </div>
+
+                    <!-- Видеокарта -->
+                    <div class="component-card" onclick="showComponent('gpu')">
+                        <div class="component-icon">
+                            <img src="images/gpu-icon.png" alt="Иконка видеокарты" onerror="this.style.display='none'; this.parentElement.innerHTML='🎮';">
+                        </div>
+                        <h3>Видеокарта (GPU)</h3>
+                        <p>Обрабатывает графику и изображения, важна для игр и рендеринга.</p>
+                        <div class="specs">
+                            <span style="display: block; margin-top: 10px; color: #94a3b8;">Нажмите для подробностей</span>
+                        </div>
+                    </div>
+
+                    <!-- Оперативная память -->
+                    <div class="component-card" onclick="showComponent('ram')">
+                        <div class="component-icon">
+                            <img src="images/ram-icon.png" alt="Иконка оперативной памяти" onerror="this.style.display='none'; this.parentElement.innerHTML='💾';">
+                        </div>
+                        <h3>Оперативная память (RAM)</h3>
+                        <p>Временная память для быстрого доступа к данным.</p>
+                        <div class="specs">
+                            <span style="display: block; margin-top: 10px; color: #94a3b8;">Нажмите для подробностей</span>
+                        </div>
+                    </div>
+
+                    <!-- Накопитель -->
+                    <div class="component-card" onclick="showComponent('storage')">
+                        <div class="component-icon">
+                            <img src="images/storage-icon.png" alt="Иконка накопителя" onerror="this.style.display='none'; this.parentElement.innerHTML='💿';">
+                        </div>
+                        <h3>Накопитель (SSD/HDD)</h3>
+                        <p>Постоянное хранилище для операционной системы и файлов.</p>
+                        <div class="specs">
+                            <span style="display: block; margin-top: 10px; color: #94a3b8;">Нажмите для подробностей</span>
+                        </div>
+                    </div>
+
+                    <!-- Материнская плата -->
+                    <div class="component-card" onclick="showComponent('motherboard')">
+                        <div class="component-icon">
+                            <img src="images/motherboard-icon.png" alt="Иконка материнской платы" onerror="this.style.display='none'; this.parentElement.innerHTML='🔌';">
+                        </div>
+                        <h3>Материнская плата</h3>
+                        <p>Основа системы, соединяет все компоненты между собой.</p>
+                        <div class="specs">
+                            <span style="display: block; margin-top: 10px; color: #94a3b8;">Нажмите для подробностей</span>
+                        </div>
+                    </div>
+
+                    <!-- Блок питания -->
+                    <div class="component-card" onclick="showComponent('psu')">
+                        <div class="component-icon">
+                            <img src="images/psu-icon.png" alt="Иконка блока питания" onerror="this.style.display='none'; this.parentElement.innerHTML='🔋';">
+                        </div>
+                        <h3>Блок питания (PSU)</h3>
+                        <p>Обеспечивает питание всех компонентов системы.</p>
+                        <div class="specs">
+                            <span style="display: block; margin-top: 10px; color: #94a3b8;">Нажмите для подробностей</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Страницы компонентов -->
+        
+        <!-- Процессор -->
+        <div id="cpu-page" class="page">
+            <div class="component-page">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← Назад к списку
+                </button>
+                
+                <div class="component-header">
+                    <div class="component-image">
+                        <img src="images/cpu-main.jpg" alt="Процессор Intel Core i9" 
+                             onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div class=\'image-placeholder\'>⚙️</div>';">
+                    </div>
+                    <div>
+                        <h1 style="color: #60a5fa; margin-bottom: 15px;">Процессор (CPU)</h1>
+                        <p style="color: #cbd5e1; margin-bottom: 20px; line-height: 1.6;">
+                            Центральный процессор — это основной вычислительный компонент компьютера, который выполняет инструкции компьютерных программ.
+                        </p>
+                        <div style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 10px; display: inline-block;">
+                            <span style="color: #60a5fa; font-weight: bold;">Цена: от 8 000 до 150 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Основные характеристики</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Тактовая частота</strong>
+                        <span style="color: #cbd5e1;">3.0 - 5.8 ГГц</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Количество ядер</strong>
+                        <span style="color: #cbd5e1;">2 - 64 ядра</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Кэш-память</strong>
+                        <span style="color: #cbd5e1;">4 - 128 МБ</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">TDP</strong>
+                        <span style="color: #cbd5e1;">35 - 280 Вт</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Техпроцесс</strong>
+                        <span style="color: #cbd5e1;">3 - 14 нм</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Сокет</strong>
+                        <span style="color: #cbd5e1;">LGA1700, AM5, sTRX4</span>
+                    </div>
+                </div>
+
+                <!-- Карусель изображений (3 слайда) -->
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Галерея</h2>
+                <div class="carousel-container" id="cpu-carousel">
+                    <div class="carousel">
+                        <div class="carousel-slide">
+                            <img src="images/cpu-1.jpg" alt="Процессор вид сверху" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>CPU 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/cpu-2.jpg" alt="Процессор на материнской плате" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>CPU 2</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/cpu-3.jpg" alt="Сравнение процессоров" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>CPU 3</div>';">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide('cpu')">‹</button>
+                    <button class="carousel-btn next" onclick="nextSlide('cpu')">›</button>
+                    <div class="carousel-dots" id="cpu-dots">
+                        <button class="carousel-dot active" onclick="goToSlide('cpu', 0)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('cpu', 1)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('cpu', 2)"></button>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Подробное описание</h2>
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">Процессор состоит из миллионов транзисторов, размещенных на кремниевом кристалле. Он выполняет арифметические, логические операции и управляет работой других компонентов системы.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Ключевые функции:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Выполнение инструкций программ</li>
+                        <li>Управление операциями ввода-вывода</li>
+                        <li>Координация работы всех компонентов</li>
+                        <li>Обработка математических вычислений</li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Основные производители:</strong> Intel, AMD</p>
+                    
+                    <p><strong style="color: #60a5fa;">Рекомендации по выбору:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Офисные задачи: 2-4 ядра, частота от 3.0 ГГц</li>
+                        <li>Игры: 6-8 ядер, частота от 4.0 ГГц</li>
+                        <li>Профессиональная работа: 12+ ядер</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Видеокарта -->
+        <div id="gpu-page" class="page">
+            <div class="component-page">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← Назад к списку
+                </button>
+                
+                <div class="component-header">
+                    <div class="component-image">
+                        <img src="images/gpu-main.jpg" alt="Видеокарта NVIDIA RTX" 
+                             onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div class=\'image-placeholder\'>🎮</div>';">
+                    </div>
+                    <div>
+                        <h1 style="color: #60a5fa; margin-bottom: 15px;">Видеокарта (GPU)</h1>
+                        <p style="color: #cbd5e1; margin-bottom: 20px; line-height: 1.6;">
+                            Графический процессор специализируется на обработке компьютерной графики и изображений.
+                        </p>
+                        <div style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 10px; display: inline-block;">
+                            <span style="color: #60a5fa; font-weight: bold;">Цена: от 15 000 до 500 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Основные характеристики</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Объем видеопамяти</strong>
+                        <span style="color: #cbd5e1;">4 - 48 ГБ</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Тип памяти</strong>
+                        <span style="color: #cbd5e1;">GDDR6, GDDR6X, HBM2</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Частота ядра</strong>
+                        <span style="color: #cbd5e1;">1200 - 2500 МГц</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Шина памяти</strong>
+                        <span style="color: #cbd5e1;">64 - 384 бит</span>
+                    </div>
+                </div>
+
+                <!-- Карусель изображений (3 слайда) -->
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Галерея</h2>
+                <div class="carousel-container" id="gpu-carousel">
+                    <div class="carousel">
+                        <div class="carousel-slide">
+                            <img src="images/gpu-1.jpg" alt="Видеокарта NVIDIA" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>GPU 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/gpu-2.jpg" alt="Видеокарта AMD" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>GPU 2</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/gpu-3.jpg" alt="Видеокарта с подсветкой" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>GPU 3</div>';">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide('gpu')">‹</button>
+                    <button class="carousel-btn next" onclick="nextSlide('gpu')">›</button>
+                    <div class="carousel-dots" id="gpu-dots">
+                        <button class="carousel-dot active" onclick="goToSlide('gpu', 0)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('gpu', 1)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('gpu', 2)"></button>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Подробное описание</h2>
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">Видеокарта состоит из графического процессора, видеопамяти, системы охлаждения и портов для подключения мониторов. Современные видеокарты также используются для машинного обучения и научных вычислений.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Ключевые функции:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Рендеринг 2D и 3D графики</li>
+                        <li>Ускорение видео декодирования</li>
+                        <li>Поддержка Ray Tracing</li>
+                        <li>Искусственный интеллект и машинное обучение</li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Основные производители:</strong> NVIDIA, AMD, Intel</p>
+                    
+                    <p><strong style="color: #60a5fa;">Рекомендации по выбору:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Офис/мультимедиа: встроенная графика или до 4 ГБ</li>
+                        <li>Игры 1080p: 6-8 ГБ GDDR6</li>
+                        <li>Игры 4К: 12+ ГБ GDDR6X</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Оперативная память -->
+        <div id="ram-page" class="page">
+            <div class="component-page">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← Назад к списку
+                </button>
+                
+                <div class="component-header">
+                    <div class="component-image">
+                        <img src="images/ram-main.jpg" alt="Оперативная память DDR4" 
+                             onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div class=\'image-placeholder\'>💾</div>';">
+                    </div>
+                    <div>
+                        <h1 style="color: #60a5fa; margin-bottom: 15px;">Оперативная память (RAM)</h1>
+                        <p style="color: #cbd5e1; margin-bottom: 20px; line-height: 1.6;">
+                            Оперативная память — это временная память для хранения данных, с которыми процессор работает в текущий момент.
+                        </p>
+                        <div style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 10px; display: inline-block;">
+                            <span style="color: #60a5fa; font-weight: bold;">Цена: от 2 000 до 50 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Основные характеристики</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Объем памяти</strong>
+                        <span style="color: #cbd5e1;">4 - 128 ГБ на модуль</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Тип памяти</strong>
+                        <span style="color: #cbd5e1;">DDR4, DDR5</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Частота</strong>
+                        <span style="color: #cbd5e1;">2133 - 6800 МГц</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Тайминги</strong>
+                        <span style="color: #cbd5e1;">CL14 - CL40</span>
+                    </div>
+                </div>
+
+                <!-- Карусель изображений (3 слайда) -->
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Галерея</h2>
+                <div class="carousel-container" id="ram-carousel">
+                    <div class="carousel">
+                        <div class="carousel-slide">
+                            <img src="images/ram-1.jpg" alt="Оперативная память Corsair" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>RAM 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/ram-2.jpg" alt="Оперативная память G.Skill" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>RAM 2</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/ram-3.jpg" alt="Оперативная память на материнской плате" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>RAM 3</div>';">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide('ram')">‹</button>
+                    <button class="carousel-btn next" onclick="nextSlide('ram')">›</button>
+                    <div class="carousel-dots" id="ram-dots">
+                        <button class="carousel-dot active" onclick="goToSlide('ram', 0)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('ram', 1)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('ram', 2)"></button>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Подробное описание</h2>
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">Оперативная память обеспечивает быстрый доступ к данным для процессора. После выключения компьютера данные из оперативной памяти стираются. Работает намного быстрее, чем постоянные накопители.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Ключевые функции:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Хранение выполняемых программ и их данных</li>
+                        <li>Быстрый обмен данными с процессором</li>
+                        <li>Кэширование часто используемых данных</li>
+                        <li>Поддержка многозадачности</li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Основные производители:</strong> Corsair, Kingston, G.Skill, Crucial</p>
+                    
+                    <p><strong style="color: #60a5fa;">Рекомендации по выбору:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Windows 10/11: минимум 8 ГБ</li>
+                        <li>Игры: 16 ГБ DDR4 3200 МГц или DDR5 5200 МГц</li>
+                        <li>Профессиональные задачи: 32+ ГБ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Накопитель -->
+        <div id="storage-page" class="page">
+            <div class="component-page">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← Назад к списку
+                </button>
+                
+                <div class="component-header">
+                    <div class="component-image">
+                        <img src="images/storage-main.jpg" alt="SSD накопитель" 
+                             onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div class=\'image-placeholder\'>💿</div>';">
+                    </div>
+                    <div>
+                        <h1 style="color: #60a5fa; margin-bottom: 15px;">Накопитель (SSD/HDD)</h1>
+                        <p style="color: #cbd5e1; margin-bottom: 20px; line-height: 1.6;">
+                            Устройство для постоянного хранения данных: операционной системы, программ и файлов.
+                        </p>
+                        <div style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 10px; display: inline-block;">
+                            <span style="color: #60a5fa; font-weight: bold;">Цена: от 3 000 до 100 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Основные характеристики</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Тип накопителя</strong>
+                        <span style="color: #cbd5e1;">HDD (механический), SSD (твердотельный)</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Объем</strong>
+                        <span style="color: #cbd5e1;">128 ГБ - 16 ТБ</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Скорость чтения/записи</strong>
+                        <span style="color: #cbd5e1;">HDD: до 200 МБ/с, SSD: до 7000 МБ/с</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Интерфейс</strong>
+                        <span style="color: #cbd5e1;">SATA, NVMe</span>
+                    </div>
+                </div>
+
+                <!-- Карусель изображений (3 слайда) -->
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Галерея</h2>
+                <div class="carousel-container" id="storage-carousel">
+                    <div class="carousel">
+                        <div class="carousel-slide">
+                            <img src="images/storage-1.jpg" alt="SSD диск" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>SSD 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/storage-2.jpg" alt="HDD диск" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>HDD 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/storage-3.jpg" alt="M.2 SSD накопитель" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>M.2 SSD</div>';">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide('storage')">‹</button>
+                    <button class="carousel-btn next" onclick="nextSlide('storage')">›</button>
+                    <div class="carousel-dots" id="storage-dots">
+                        <button class="carousel-dot active" onclick="goToSlide('storage', 0)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('storage', 1)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('storage', 2)"></button>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Подробное описание</h2>
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">SSD (твердотельные накопители) работают намного быстрее HDD (жестких дисков) за счет отсутствия движущихся частей. SSD идеально подходят для установки операционной системы и программ, а HDD — для хранения больших объемов данных.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Ключевые функции:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Хранение операционной системы</li>
+                        <li>Хранение программ и игр</li>
+                        <li>Архивация файлов и документов</li>
+                        <li>Резервное копирование данных</li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Основные производители:</strong> Samsung, Western Digital, Seagate, Crucial</p>
+                    
+                    <p><strong style="color: #60a5fa;">Рекомендации по выбору:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>SSD для системы и программ (минимум 256 ГБ)</li>
+                        <li>HDD для хранения файлов (от 1 ТБ)</li>
+                        <li>Для игр: 1 ТБ NVMe SSD</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Материнская плата -->
+        <div id="motherboard-page" class="page">
+            <div class="component-page">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← Назад к списку
+                </button>
+                
+                <div class="component-header">
+                    <div class="component-image">
+                        <img src="images/motherboard-main.jpg" alt="Материнская плата ASUS" 
+                             onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div class=\'image-placeholder\'>🔌</div>';">
+                    </div>
+                    <div>
+                        <h1 style="color: #60a5fa; margin-bottom: 15px;">Материнская плата</h1>
+                        <p style="color: #cbd5e1; margin-bottom: 20px; line-height: 1.6;">
+                            Основная плата, которая соединяет все компоненты компьютера между собой.
+                        </p>
+                        <div style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 10px; display: inline-block;">
+                            <span style="color: #60a5fa; font-weight: bold;">Цена: от 5 000 до 100 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Основные характеристики</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Форм-фактор</strong>
+                        <span style="color: #cbd5e1;">ATX, Micro-ATX, Mini-ITX</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Сокет</strong>
+                        <span style="color: #cbd5e1;">LGA1700, AM5, AM4</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Чипсет</strong>
+                        <span style="color: #cbd5e1;">Z790, B760, X670, B650</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Слоты RAM</strong>
+                        <span style="color: #cbd5e1;">2-8 слотов DDR4/DDR5</span>
+                    </div>
+                </div>
+
+                <!-- Карусель изображений (3 слайда) -->
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Галерея</h2>
+                <div class="carousel-container" id="motherboard-carousel">
+                    <div class="carousel">
+                        <div class="carousel-slide">
+                            <img src="images/motherboard-1.jpg" alt="Материнская плата MSI" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>MB 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/motherboard-2.jpg" alt="Материнская плата ASUS" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>MB 2</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/motherboard-3.jpg" alt="Материнская плата Gigabyte" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>MB 3</div>';">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide('motherboard')">‹</button>
+                    <button class="carousel-btn next" onclick="nextSlide('motherboard')">›</button>
+                    <div class="carousel-dots" id="motherboard-dots">
+                        <button class="carousel-dot active" onclick="goToSlide('motherboard', 0)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('motherboard', 1)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('motherboard', 2)"></button>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Подробное описание</h2>
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">Материнская плата определяет, какие компоненты можно установить в компьютер. Она обеспечивает связь между процессором, памятью, видеокартой и другими устройствами.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Ключевые функции:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Соединение всех компонентов системы</li>
+                        <li>Распределение питания</li>
+                        <li>Обеспечение связи между устройствами</li>
+                        <li>Расширение функциональности через слоты</li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Основные производители:</strong> ASUS, MSI, Gigabyte, ASRock</p>
+                    
+                    <p><strong style="color: #60a5fa;">Рекомендации по выбору:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Выбирать под сокет процессора</li>
+                        <li>Обращать внимание на чипсет</li>
+                        <li>Проверять наличие нужных портов</li>
+                        <li>Учитывать форм-фактор корпуса</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок питания -->
+        <div id="psu-page" class="page">
+            <div class="component-page">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← Назад к списку
+                </button>
+                
+                <div class="component-header">
+                    <div class="component-image">
+                        <img src="images/psu-main.jpg" alt="Блок питания Corsair" 
+                             onerror="this.onerror=null; this.src=''; this.parentElement.innerHTML='<div class=\'image-placeholder\'>🔋</div>';">
+                    </div>
+                    <div>
+                        <h1 style="color: #60a5fa; margin-bottom: 15px;">Блок питания (PSU)</h1>
+                        <p style="color: #cbd5e1; margin-bottom: 20px; line-height: 1.6;">
+                            Преобразует переменный ток из розетки в постоянный и распределяет питание по компонентам.
+                        </p>
+                        <div style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 10px; display: inline-block;">
+                            <span style="color: #60a5fa; font-weight: bold;">Цена: от 3 000 до 50 000 ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Основные характеристики</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Мощность</strong>
+                        <span style="color: #cbd5e1;">450 - 2000 Вт</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Сертификация 80 Plus</strong>
+                        <span style="color: #cbd5e1;">Bronze, Gold, Platinum, Titanium</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Модульность</strong>
+                        <span style="color: #cbd5e1;">Не модульный, полумодульный, модульный</span>
+                    </div>
+                    <div class="spec-item">
+                        <strong style="color: #60a5fa;">Разъемы</strong>
+                        <span style="color: #cbd5e1;">24-pin, 8-pin CPU, PCIe 6+2 pin</span>
+                    </div>
+                </div>
+
+                <!-- Карусель изображений (3 слайда) -->
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Галерея</h2>
+                <div class="carousel-container" id="psu-carousel">
+                    <div class="carousel">
+                        <div class="carousel-slide">
+                            <img src="images/psu-1.jpg" alt="Блок питания Seasonic" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>PSU 1</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/psu-2.jpg" alt="Блок питания Corsair" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>PSU 2</div>';">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/psu-3.jpg" alt="Модульный блок питания" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;\'>Модульный PSU</div>';">
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide('psu')">‹</button>
+                    <button class="carousel-btn next" onclick="nextSlide('psu')">›</button>
+                    <div class="carousel-dots" id="psu-dots">
+                        <button class="carousel-dot active" onclick="goToSlide('psu', 0)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('psu', 1)"></button>
+                        <button class="carousel-dot" onclick="goToSlide('psu', 2)"></button>
+                    </div>
+                </div>
+
+                <h2 style="color: #60a5fa; margin: 30px 0 20px;">Подробное описание</h2>
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">Блок питания преобразует переменный ток 220В в постоянный ток низкого напряжения для питания компонентов компьютера. Качество блока питания критически важно для стабильности и долговечности системы.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Ключевые функции:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Преобразование напряжения</li>
+                        <li>Защита от перегрузок и короткого замыкания</li>
+                        <li>Стабилизация напряжения</li>
+                        <li>Обеспечение чистой синусоиды</li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;"><strong style="color: #60a5fa;">Основные производители:</strong> Seasonic, Corsair, EVGA, be quiet!</p>
+                    
+                    <p><strong style="color: #60a5fa;">Рекомендации по выбору:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li>Брать на 20-30% больше расчетной мощности</li>
+                        <li>Выбирать от проверенных производителей</li>
+                        <li>Сертификация 80 Plus Gold и выше</li>
+                        <li>Модульные кабели для удобства сборки</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Сравнительная таблица -->
+        <div id="comparison-page" class="page">
+            <div style="background: rgba(30, 41, 59, 0.8); border-radius: 20px; padding: 40px; margin-top: 2rem;">
+                <h1 style="color: #60a5fa; margin-bottom: 30px; text-align: center;">Сравнение компонентов</h1>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Компонент</th>
+                            <th>Бюджетный вариант</th>
+                            <th>Средний уровень</th>
+                            <th>Высокий уровень</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Процессор</td>
+                            <td>AMD Ryzen 5 5600G<br>6 ядер, 12 потоков</td>
+                            <td>Intel Core i5-13600K<br>14 ядер, 20 потоков</td>
+                            <td>AMD Ryzen 9 7950X<br>16 ядер, 32 потока</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Видеокарта</td>
+                            <td>NVIDIA RTX 3060<br>12 ГБ GDDR6</td>
+                            <td>NVIDIA RTX 4070<br>12 ГБ GDDR6X</td>
+                            <td>NVIDIA RTX 4090<br>24 ГБ GDDR6X</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Оперативная память</td>
+                            <td>16 ГБ DDR4<br>3200 МГц</td>
+                            <td>32 ГБ DDR5<br>5600 МГц</td>
+                            <td>64 ГБ DDR5<br>6000 МГц</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Накопитель</td>
+                            <td>512 ГБ SSD + 1 ТБ HDD</td>
+                            <td>1 ТБ NVMe SSD + 2 ТБ HDD</td>
+                            <td>2 ТБ NVMe SSD Gen4 + 4 ТБ HDD</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Материнская плата</td>
+                            <td>ASUS Prime B660M-K<br>Micro-ATX, DDR4, 2 слота M.2</td>
+                            <td>MSI MAG B760 TOMAHAWK<br>ATX, DDR5, 3 слота M.2, Wi-Fi 6</td>
+                            <td>ASUS ROG Strix Z790-E<br>ATX, DDR5, 5 слотов M.2, Thunderbolt 4</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Блок питания</td>
+                            <td>550W 80+ Bronze</td>
+                            <td>750W 80+ Gold</td>
+                            <td>1000W 80+ Platinum</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #60a5fa; font-weight: bold;">Примерная стоимость</td>
+                            <td style="color: #42f593; font-weight: bold;">40 000 – 60 000 ₽</td>
+                            <td style="color: #4a90e2; font-weight: bold;">150 000 – 250 000 ₽</td>
+                            <td style="color: #9b51e0; font-weight: bold;">300 000 – 500 000+ ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- О сайте -->
+        <div id="about-page" class="page">
+            <div style="background: rgba(30, 41, 59, 0.8); border-radius: 20px; padding: 40px; margin-top: 2rem;">
+                <h1 style="color: #60a5fa; margin-bottom: 20px; text-align: center;">О сайте</h1>
+                
+                <div style="color: #cbd5e1; line-height: 1.7;">
+                    <p style="margin-bottom: 15px;">Добро пожаловать на сайт "Компьютерные компоненты"! Наша цель — предоставить понятную и подробную информацию о всех основных компонентах персонального компьютера.</p>
+                    
+                    <h2 style="color: #60a5fa; margin: 25px 0 15px;">Что вы найдете на сайте:</h2>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Подробные описания процессоров, видеокарт, памяти и других компонентов</li>
+                        <li>Технические характеристики и параметры</li>
+                        <li>Рекомендации по выбору для разных задач</li>
+                        <li>Сравнительные таблицы</li>
+                        <li>Актуальную информацию о технологиях</li>
+                    </ul>
+                    
+                    <h2 style="color: #60a5fa; margin: 25px 0 15px;">Для кого этот сайт:</h2>
+                    <ul style="margin-left: 20px;">
+                        <li>Новичков, которые только начинают знакомство с ПК</li>
+                        <li>Опытных пользователей, желающих обновить знания</li>
+                        <li>Геймеров, выбирающих компоненты для игрового ПК</li>
+                        <li>Профессионалов, работающих с требовательными приложениями</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>О сайте</h3>
+                    <p style="color: #cbd5e1;">Энциклопедия компьютерных компонентов для всех, кто интересуется технологиями.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Навигация</h3>
+                    <ul>
+                        <li><a href="#" onclick="showPage('home')">Главная</a></li>
+                        <li><a href="#" onclick="showPage('comparison')">Сравнение</a></li>
+                        <li><a href="#" onclick="showPage('about')">О сайте</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Компоненты</h3>
+                    <ul>
+                        <li><a href="#" onclick="showComponent('cpu')">Процессоры</a></li>
+                        <li><a href="#" onclick="showComponent('gpu')">Видеокарты</a></li>
+                        <li><a href="#" onclick="showComponent('ram')">Оперативная память</a></li>
+                        <li><a href="#" onclick="showComponent('storage')">Накопители</a></li>
+                        <li><a href="#" onclick="showComponent('motherboard')">Материнские платы</a></li>
+                        <li><a href="#" onclick="showComponent('psu')">Блоки питания</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 Компьютерные компоненты. Все материалы для образовательных целей.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Управление страницами
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // При переключении страниц сбрасываем карусель на первый слайд
+            if (pageId === 'cpu' || pageId === 'gpu' || pageId === 'ram' || 
+                pageId === 'storage' || pageId === 'motherboard' || pageId === 'psu') {
+                setTimeout(() => {
+                    goToSlide(pageId, 0);
+                }, 100);
+            }
+        }
+        
+        function showComponent(componentId) {
+            showPage(componentId);
+        }
+        
+        function scrollToComponents() {
+            const componentsSection = document.getElementById('components');
+            if (componentsSection) {
+                componentsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Управление каруселью - теперь 3 слайда для каждого компонента
+        const carouselData = {
+            cpu: { currentIndex: 0, totalSlides: 3 },
+            gpu: { currentIndex: 0, totalSlides: 3 },
+            ram: { currentIndex: 0, totalSlides: 3 },
+            storage: { currentIndex: 0, totalSlides: 3 },
+            motherboard: { currentIndex: 0, totalSlides: 3 },
+            psu: { currentIndex: 0, totalSlides: 3 }
+        };
+        
+        function updateCarousel(componentId) {
+            const data = carouselData[componentId];
+            const carousel = document.getElementById(`${componentId}-carousel`).querySelector('.carousel');
+            const dots = document.getElementById(`${componentId}-dots`).querySelectorAll('.carousel-dot');
+            
+            // Обновляем позицию карусели
+            carousel.style.transform = `translateX(-${data.currentIndex * 100}%)`;
+            
+            // Обновляем точки
+            dots.forEach((dot, index) => {
+                if (index === data.currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        function nextSlide(componentId) {
+            const data = carouselData[componentId];
+            data.currentIndex = (data.currentIndex + 1) % data.totalSlides;
+            updateCarousel(componentId);
+        }
+        
+        function prevSlide(componentId) {
+            const data = carouselData[componentId];
+            data.currentIndex = (data.currentIndex - 1 + data.totalSlides) % data.totalSlides;
+            updateCarousel(componentId);
+        }
+        
+        function goToSlide(componentId, index) {
+            const data = carouselData[componentId];
+            if (index >= 0 && index < data.totalSlides) {
+                data.currentIndex = index;
+                updateCarousel(componentId);
+            }
+        }
+        
+        // Автоматическое переключение слайдов
+        let autoSlideInterval;
+        
+        function startAutoSlide(componentId) {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+            }
+            
+            autoSlideInterval = setInterval(() => {
+                nextSlide(componentId);
+            }, 5000);
+        }
+        
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+            }
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('home');
+            
+            // Предотвращение перехода по ссылкам #
+            document.querySelectorAll('a[href="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                });
+            });
+            
+            // Автоматическое переключение слайдов при наведении
+            const carouselContainers = document.querySelectorAll('.carousel-container');
+            carouselContainers.forEach(container => {
+                container.addEventListener('mouseenter', () => {
+                    stopAutoSlide();
+                });
+                
+                container.addEventListener('mouseleave', () => {
+                    const componentId = container.id.replace('-carousel', '');
+                    startAutoSlide(componentId);
+                });
+            });
+            
+            // Запускаем автопрокрутку для активной карусели
+            startAutoSlide('cpu');
+        });
+        
+        // Останавливаем автопрокрутку при переключении страниц
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopAutoSlide();
+            } else {
+                // Перезапускаем автопрокрутку для текущей страницы
+                const activePage = document.querySelector('.page.active');
+                if (activePage && activePage.id) {
+                    const componentId = activePage.id.replace('-page', '');
+                    if (carouselData[componentId]) {
+                        startAutoSlide(componentId);
+                    }
+                }
+            }
+        });
+        
+        // Обработка клавиш для управления каруселью
+        document.addEventListener('keydown', (e) => {
+            const activePage = document.querySelector('.page.active');
+            if (activePage && activePage.id) {
+                const componentId = activePage.id.replace('-page', '');
+                if (carouselData[componentId]) {
+                    if (e.key === 'ArrowLeft') {
+                        prevSlide(componentId);
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowRight') {
+                        nextSlide(componentId);
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
